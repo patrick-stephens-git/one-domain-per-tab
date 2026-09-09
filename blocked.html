@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain Already Open</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fef2f2;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      text-align: center;
+      max-width: 460px;
+      padding: 48px 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #dc2626;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .existing-url {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 14px;
+      background: #f3f4f6;
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .existing-url a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🚫</div>
+    <h1>Domain Already Open</h1>
+    <p>You already have this domain open in another tab. Please close that tab before opening another URL from this domain.</p>
+    <div class="existing-url" id="existing-url"></div>
+  </div>
+
+  <script src="blocked.js"></script>
+</body>
+</html>
