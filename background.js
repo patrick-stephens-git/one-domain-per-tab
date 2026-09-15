@@ -34,7 +34,13 @@ function ensureInitialized() {
     initPromise = (async () => {
       const tabs = await chrome.tabs.query({});
       for (const tab of tabs) {
-        trackWithoutChecking(tab.id, tab.url || tab.pendingUrl);
+        const url = tab.url || tab.pendingUrl;
+        // Skip tabs with no resolved domain yet (e.g. a brand-new tab whose
+        // onCreated is what's racing us into this lazy init): marking them
+        // settled here would make their real onUpdated navigation look
+        // already-evaluated and skip the duplicate check entirely.
+        if (!domainKeyOf(url)) continue;
+        trackWithoutChecking(tab.id, url);
       }
     })();
   }
@@ -58,8 +64,9 @@ async function checkAndMaybeBlock(tabId, url, domainKey) {
     if (domainKeyOf(otherUrl) === domainKey) {
       const blockedUrl =
         chrome.runtime.getURL("blocked.html") +
-        `?existingTabId=${otherTabId}&existingUrl=` +
-        encodeURIComponent(otherUrl);
+        `?existingTabId=${otherTabId}` +
+        `&existingUrl=${encodeURIComponent(otherUrl)}` +
+        `&requestedUrl=${encodeURIComponent(url)}`;
       chrome.tabs.update(tabId, { url: blockedUrl });
       return;
     }

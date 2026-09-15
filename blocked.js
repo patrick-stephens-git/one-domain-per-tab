@@ -1,7 +1,10 @@
 const params = new URLSearchParams(window.location.search);
 const existingUrl = params.get("existingUrl");
 const existingTabId = Number(params.get("existingTabId"));
-const container = document.getElementById("existing-url");
+const requestedUrl = params.get("requestedUrl");
+const existingContainer = document.getElementById("existing-url");
+const requestedContainer = document.getElementById("requested-url");
+const replaceBtn = document.getElementById("replace-btn");
 
 async function switchToExistingTab(e) {
   e.preventDefault();
@@ -19,6 +22,23 @@ async function switchToExistingTab(e) {
   }
 }
 
+async function replaceExistingTab() {
+  try {
+    const tab = await chrome.tabs.get(existingTabId);
+    await chrome.tabs.update(existingTabId, { url: requestedUrl });
+    await chrome.windows.update(tab.windowId, { focused: true });
+    await chrome.tabs.update(existingTabId, { active: true });
+
+    const current = await chrome.tabs.getCurrent();
+    if (current) chrome.tabs.remove(current.id);
+  } catch {
+    // The other tab is gone (closed since this page loaded) — the domain is
+    // free again, so just load the requested URL in this tab instead.
+    const current = await chrome.tabs.getCurrent();
+    if (current) chrome.tabs.update(current.id, { url: requestedUrl });
+  }
+}
+
 if (existingUrl) {
   let isHttp = false;
   try {
@@ -32,8 +52,19 @@ if (existingUrl) {
     if (!Number.isNaN(existingTabId)) {
       link.addEventListener("click", switchToExistingTab);
     }
-    container.appendChild(link);
+    existingContainer.appendChild(link);
   } else {
-    container.textContent = existingUrl;
+    existingContainer.textContent = existingUrl;
+  }
+}
+
+if (requestedUrl) {
+  // Shown as plain text only — it's the blocked destination, not something
+  // this page can navigate to.
+  requestedContainer.textContent = requestedUrl;
+
+  if (!Number.isNaN(existingTabId)) {
+    replaceBtn.hidden = false;
+    replaceBtn.addEventListener("click", replaceExistingTab);
   }
 }

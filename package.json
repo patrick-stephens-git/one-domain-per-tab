@@ -1,0 +1,12 @@
+{
+  "name": "one-domain-per-tab",
+  "private": true,
+  "version": "1.0.0",
+  "description": "One Domain Per Tab Chrome extension",
+  "scripts": {
+    "test": "node tests/domain-block.test.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

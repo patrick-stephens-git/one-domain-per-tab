@@ -48,20 +48,49 @@
       line-height: 1.6;
     }
 
-    .existing-url {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 6px 14px;
+    .url-block {
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .url-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .url-box {
+      padding: 8px 14px;
       background: #f3f4f6;
-      border-radius: 20px;
+      border-radius: 10px;
       font-size: 13px;
       font-family: monospace;
       word-break: break-all;
     }
 
-    .existing-url a {
+    .url-box a {
       color: #2563eb;
       text-decoration: underline;
+    }
+
+    button.replace-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      background: #dc2626;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button.replace-btn:hover {
+      background: #b91c1c;
     }
   </style>
 </head>
@@ -70,7 +99,18 @@
     <div class="icon">🚫</div>
     <h1>Domain Already Open</h1>
     <p>You already have this domain open in another tab. Please close that tab before opening another URL from this domain.</p>
-    <div class="existing-url" id="existing-url"></div>
+
+    <div class="url-block">
+      <div class="url-label">Already open in another tab</div>
+      <div class="url-box" id="existing-url"></div>
+    </div>
+
+    <div class="url-block">
+      <div class="url-label">You tried to visit</div>
+      <div class="url-box" id="requested-url"></div>
+    </div>
+
+    <button class="replace-btn" id="replace-btn" hidden>Go there and load this URL instead</button>
   </div>
 
   <script src="blocked.js"></script>
